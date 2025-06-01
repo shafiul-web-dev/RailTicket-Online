@@ -17,7 +17,7 @@ public class TicketController : ControllerBase
 		_context = context;
 	}
 
-	// 🔹 Get All Tickets (READ)
+	
 	[HttpGet]
 	public async Task<ActionResult<IEnumerable<TicketDto>>> GetTickets()
 	{
@@ -47,7 +47,7 @@ public class TicketController : ControllerBase
 		return Ok(tickets);
 	}
 
-	// 🔹 Book a Ticket (CREATE + Reserve Seat)
+	
 	[HttpPost]
 	public async Task<ActionResult<Ticket>> BookTicket(CreateTicketDto ticketDto)
 	{
@@ -58,7 +58,7 @@ public class TicketController : ControllerBase
 		if (seat == null) return NotFound(new { message = "Seat not found." });
 		if (seat.IsReserved) return BadRequest(new { message = "Seat already reserved." });
 
-		// Reserve the seat
+		
 		seat.IsReserved = true;
 		await _context.SaveChangesAsync();
 
@@ -87,7 +87,7 @@ public class TicketController : ControllerBase
 		return CreatedAtAction(nameof(GetTickets), new { id = ticket.Id }, ticket);
 	}
 
-	// 🔹 Update Ticket Details (UPDATE)
+	
 	[HttpPut("{id}")]
 	public async Task<IActionResult> UpdateTicket(int id, UpdateTicketDto ticketDto)
 	{
@@ -103,7 +103,7 @@ public class TicketController : ControllerBase
 		return Ok(new { message = "Ticket updated successfully." });
 	}
 
-	// 🔹 Cancel a Ticket (DELETE + Free the Seat)
+	
 	[HttpDelete("{id}")]
 	public async Task<IActionResult> CancelTicket(int id)
 	{

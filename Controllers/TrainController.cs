@@ -18,7 +18,7 @@ public class TrainController : ControllerBase
 		_context = context;
 	}
 
-	// 🔹 Get All Trains (READ)
+	
 	[HttpGet]
 	public async Task<ActionResult<IEnumerable<TrainDto>>> GetTrains()
 	{
@@ -35,7 +35,7 @@ public class TrainController : ControllerBase
 		return Ok(trains);
 	}
 
-	// 🔹 Get Train by ID (READ)
+	
 	[HttpGet("{id}")]
 	public async Task<ActionResult<TrainDto>> GetTrainById(int id)
 	{
@@ -53,12 +53,10 @@ public class TrainController : ControllerBase
 		});
 	}
 
-	// 🔹 Add a New Train (CREATE)
+	
 	[HttpPost]
-	public async Task<ActionResult<Train>> AddTrain(CreateTrainDto trainDto) // [FromHeader(Name = "apiKey")] string apiKey)
+	public async Task<ActionResult<Train>> AddTrain(CreateTrainDto trainDto)
 	{
-		//if (apiKey != "ADMIN_KEY")
-		//	return Unauthorized(new { message = "Unauthorized access. Only railway owners can add trains." });
 
 		if (trainDto.DepartureTime >= trainDto.ArrivalTime)
 			return BadRequest(new { message = "Departure time must be earlier than arrival time." });
@@ -77,7 +75,7 @@ public class TrainController : ControllerBase
 		return CreatedAtAction(nameof(GetTrains), new { id = train.Id }, train);
 	}
 
-	// 🔹 Update Train Details (UPDATE)
+	
 	[HttpPut("{id}")]
 	public async Task<IActionResult> UpdateTrain(int id, UpdateTrainDto trainDto)
 	{
@@ -85,7 +83,7 @@ public class TrainController : ControllerBase
 		if (train == null)
 			return NotFound(new { message = "Train not found." });
 
-		// 🔹 Validate departure & arrival times if both are provided
+		
 		if (trainDto.DepartureTime.HasValue && trainDto.ArrivalTime.HasValue)
 		{
 			if (trainDto.DepartureTime.Value >= trainDto.ArrivalTime.Value)
@@ -95,7 +93,7 @@ public class TrainController : ControllerBase
 			train.ArrivalTime = trainDto.ArrivalTime.Value;
 		}
 
-		// 🔹 Update only if values are provided (Prevent overwriting with null)
+		
 		if (!string.IsNullOrEmpty(trainDto.TrainName))
 			train.TrainName = trainDto.TrainName;
 
@@ -105,7 +103,6 @@ public class TrainController : ControllerBase
 		if (!string.IsNullOrEmpty(trainDto.Destination))
 			train.Destination = trainDto.Destination;
 
-		// 🔹 Save changes with error handling
 		try
 		{
 			await _context.SaveChangesAsync();
@@ -117,7 +114,6 @@ public class TrainController : ControllerBase
 		}
 	}
 
-	// 🔹 Delete a Train (DELETE)
 	[HttpDelete("{id}")]
 	public async Task<IActionResult> DeleteTrain(int id)
 	{
@@ -128,6 +124,6 @@ public class TrainController : ControllerBase
 		_context.Trains.Remove(train);
 		await _context.SaveChangesAsync();
 
-		return NoContent(); // Return `204 No Content` instead of `200 OK`
+		return NoContent();
 	}
 }

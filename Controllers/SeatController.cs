@@ -18,7 +18,7 @@ public class SeatController : ControllerBase
 		_context = context;
 	}
 
-	// 🔹 Get Available Seats for a Train (READ)
+	
 	[HttpGet("{trainId}")]
 	public async Task<ActionResult<IEnumerable<SeatDto>>> GetAvailableSeats(int trainId)
 	{
@@ -30,7 +30,7 @@ public class SeatController : ControllerBase
 		return Ok(seats);
 	}
 
-	// 🔹 Add New Seats for a Train (CREATE)
+	
 	[HttpPost]
 	public async Task<ActionResult<Seat>> AddSeat(CreateSeatDto seatDto)
 	{
@@ -49,7 +49,7 @@ public class SeatController : ControllerBase
 		return CreatedAtAction(nameof(GetAvailableSeats), new { id = seat.Id }, seat);
 	}
 
-	// 🔹 Reserve a Seat (UPDATE)
+	
 	[HttpPut("reserve/{seatId}")]
 	public async Task<IActionResult> ReserveSeat(int seatId)
 	{
@@ -62,7 +62,7 @@ public class SeatController : ControllerBase
 		return Ok(new { message = "Seat reserved successfully." });
 	}
 
-	// 🔹 Free a Reserved Seat (UPDATE)
+	
 	[HttpPut("free/{seatId}")]
 	public async Task<IActionResult> FreeSeat(int seatId)
 	{
@@ -74,7 +74,7 @@ public class SeatController : ControllerBase
 		return Ok(new { message = "Seat is now available." });
 	}
 
-	// 🔹 Delete a Seat from Train (DELETE)
+	
 	[HttpDelete("{seatId}")]
 	public async Task<IActionResult> DeleteSeat(int seatId)
 	{
